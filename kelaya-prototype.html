@@ -1,0 +1,2286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kelaya — кликабельный прототип редизайна</title>
+<style>
+/* Kelaya Design Tokens - Light Theme */
+
+/* Colors */
+:root {
+  --color-background: #FFF8F5;
+  --color-surface: #FFFFFF;
+  --color-surfaceMuted: #FBEEEA;
+  --color-border: #F1DDD8;
+  --color-text: #3A2B32;
+  --color-textMuted: #7A6570;
+  --color-primary: #B4506C;
+  --color-primarySoft: #F9DDE4;
+  --color-onPrimary: #FFFFFF;
+  --color-lavender: #7C68B5;
+  --color-lavenderSoft: #ECE6F8;
+  --color-mint: #3F8A70;
+  --color-mintSoft: #DFF2EA;
+  --color-peach: #B86B3A;
+  --color-peachSoft: #FCE8DA;
+  --color-sky: #4C7FA8;
+  --color-skySoft: #E1EEF7;
+  --color-danger: #A83B3B;
+  --color-dangerSoft: #F9E1E0;
+}
+
+/* Space */
+:root {
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 24px;
+  --space-xxl: 32px;
+}
+
+/* Radius */
+:root {
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+}
+
+/* Font */
+:root {
+  --font-title-size: 28px;
+  --font-title-lineHeight: 34px;
+  --font-title-weight: 700;
+  
+  --font-heading-size: 20px;
+  --font-heading-lineHeight: 26px;
+  --font-heading-weight: 600;
+  
+  --font-body-size: 16px;
+  --font-body-lineHeight: 22px;
+  --font-body-weight: 400;
+  
+  --font-bodyStrong-size: 16px;
+  --font-bodyStrong-lineHeight: 22px;
+  --font-bodyStrong-weight: 600;
+  
+  --font-small-size: 13px;
+  --font-small-lineHeight: 18px;
+  --font-small-weight: 400;
+  
+  --font-number-size: 34px;
+  --font-number-lineHeight: 40px;
+  --font-number-weight: 700;
+  
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Touch */
+:root {
+  --touch-min: 48px;
+}
+
+/* Tab Bar */
+:root {
+  --tab-bar-height: 64px;
+}
+
+/* Shadow */
+:root {
+  --shadow-card-color: #B4506C;
+  --shadow-card-opacity: 0.08;
+  --shadow-card-radius: 12px;
+  --shadow-card-offset-width: 0;
+  --shadow-card-offset-height: 4px;
+  --shadow-card-elevation: 2;
+}
+
+/* Stage Accents */
+:root {
+  --stage-self-strong: var(--color-primary);
+  --stage-self-soft: var(--color-primarySoft);
+  --stage-expecting-strong: var(--color-lavender);
+  --stage-expecting-soft: var(--color-lavenderSoft);
+  --stage-mother-strong: var(--color-mint);
+  --stage-mother-soft: var(--color-mintSoft);
+  --stage-mother_expecting-strong: var(--color-mint);
+  --stage-mother_expecting-soft: var(--color-lavenderSoft);
+}
+
+/* Reset and Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-family);
+  font-size: var(--font-body-size);
+  line-height: var(--font-body-lineHeight);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  padding: var(--space-lg);
+}
+
+/* Phone Frame */
+.phone-frame {
+  width: 390px;
+  height: 844px;
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  margin: 0 auto var(--space-xxl);
+}
+
+.phone-frame .screen {
+  height: 100%;
+  padding: var(--space-lg);
+  padding-top: calc(var(--space-lg) + var(--space-lg));
+  padding-bottom: calc(var(--tab-bar-height) + var(--space-xl) + var(--space-lg));
+  overflow-y: auto;
+}
+
+/* Typography */
+.title {
+  font-size: var(--font-title-size);
+  line-height: var(--font-title-lineHeight);
+  font-weight: var(--font-title-weight);
+  color: var(--color-text);
+  margin-bottom: var(--space-xs);
+}
+
+.heading {
+  font-size: var(--font-heading-size);
+  line-height: var(--font-heading-lineHeight);
+  font-weight: var(--font-heading-weight);
+  color: var(--color-text);
+}
+
+.body {
+  font-size: var(--font-body-size);
+  line-height: var(--font-body-lineHeight);
+  font-weight: var(--font-body-weight);
+  color: var(--color-text);
+}
+
+.body-strong {
+  font-size: var(--font-bodyStrong-size);
+  line-height: var(--font-bodyStrong-lineHeight);
+  font-weight: var(--font-bodyStrong-weight);
+  color: var(--color-text);
+}
+
+.small {
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-lineHeight);
+  font-weight: var(--font-small-weight);
+  color: var(--color-text);
+}
+
+.number {
+  font-size: var(--font-number-size);
+  line-height: var(--font-number-lineHeight);
+  font-weight: var(--font-number-weight);
+  color: var(--color-text);
+}
+
+/* Text Colors */
+.text {
+  color: var(--color-text);
+}
+
+.text-muted {
+  color: var(--color-textMuted);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-danger {
+  color: var(--color-danger);
+}
+
+.text-on-primary {
+  color: var(--color-onPrimary);
+}
+
+/* Screen */
+.screen {
+  background-color: var(--color-background);
+}
+
+.screen-container {
+  padding: var(--space-lg);
+  padding-top: calc(var(--space-lg) + var(--space-lg));
+  padding-bottom: calc(var(--tab-bar-height) + var(--space-xl) + var(--space-lg));
+  gap: var(--space-lg);
+}
+
+/* Card */
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  gap: var(--space-sm);
+  box-shadow: 0 4px 12px rgba(var(--shadow-card-color), var(--shadow-card-opacity));
+}
+
+.card-title {
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-lineHeight);
+  font-weight: var(--font-small-weight);
+  color: var(--color-textMuted);
+}
+
+/* Tone variants */
+.card.tone-surface { background-color: var(--color-surface); }
+.card.tone-surfaceMuted { background-color: var(--color-surfaceMuted); }
+.card.tone-primarySoft { background-color: var(--color-primarySoft); }
+.card.tone-skySoft { background-color: var(--color-skySoft); }
+.card.tone-mintSoft { background-color: var(--color-mintSoft); }
+.card.tone-dangerSoft { background-color: var(--color-dangerSoft); }
+.card.tone-lavenderSoft { background-color: var(--color-lavenderSoft); }
+
+/* Button */
+.btn {
+  min-height: var(--touch-min);
+  border-radius: var(--radius-pill);
+  padding: 0 var(--space-xl);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-bodyStrong-size);
+  line-height: var(--font-bodyStrong-lineHeight);
+  font-weight: var(--font-bodyStrong-weight);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  border: none;
+}
+
+.btn:active {
+  opacity: 0.7;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-onPrimary);
+}
+
+.btn-soft {
+  background-color: var(--color-primarySoft);
+  color: var(--color-text);
+}
+
+.btn-danger {
+  background-color: var(--color-dangerSoft);
+  color: var(--color-danger);
+}
+
+/* Quick Button */
+.quick-btn {
+  min-height: calc(var(--touch-min) + var(--space-lg));
+  min-width: 96px;
+  flex: 1;
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  border: none;
+  background-color: var(--color-primarySoft);
+}
+
+.quick-btn:active {
+  opacity: 0.7;
+}
+
+.quick-btn .label {
+  font-size: var(--font-bodyStrong-size);
+  line-height: var(--font-bodyStrong-lineHeight);
+  font-weight: var(--font-bodyStrong-weight);
+  color: var(--color-text);
+}
+
+.quick-btn .hint {
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-lineHeight);
+  font-weight: var(--font-small-weight);
+  color: var(--color-textMuted);
+}
+
+.quick-btn.tone-mintSoft { background-color: var(--color-mintSoft); }
+.quick-btn.tone-surfaceMuted { background-color: var(--color-surfaceMuted); }
+.quick-btn.tone-skySoft { background-color: var(--color-skySoft); }
+
+/* Pressable */
+.pressable {
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.pressable:active {
+  opacity: 0.7;
+}
+
+/* Progress */
+.progress-track {
+  height: 10px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surfaceMuted);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primary);
+}
+
+.progress-fill.tone-sky { background-color: var(--color-sky); }
+.progress-fill.tone-mint { background-color: var(--color-mint); }
+
+/* Row */
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-sm);
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.row.wrap {
+  flex-wrap: wrap;
+}
+
+/* Input */
+.input {
+  min-height: var(--touch-min);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surfaceMuted);
+  padding: 0 var(--space-lg);
+  font-size: var(--font-body-size);
+  line-height: var(--font-body-lineHeight);
+  font-weight: var(--font-body-weight);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.input-error {
+  border-color: var(--color-danger);
+}
+
+/* Field */
+.field {
+  gap: var(--space-xs);
+}
+
+.field label {
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-lineHeight);
+  font-weight: var(--font-small-weight);
+  color: var(--color-textMuted);
+}
+
+/* Date Field */
+.date-value {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.date-box {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  padding: var(--space-sm);
+  gap: var(--space-xs);
+}
+
+.date-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.date-title {
+  flex: 1;
+  text-align: center;
+}
+
+.day-bar-step {
+  border-radius: var(--radius-pill);
+  background-color: var(--color-primarySoft);
+}
+
+.day-bar-label {
+  flex: 1;
+  min-height: var(--touch-min);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.date-step {
+  min-height: var(--touch-min);
+  min-width: var(--touch-min);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Date Week */
+.date-week {
+  display: flex;
+  flex-direction: row;
+}
+
+.date-weekday {
+  flex: 1;
+  text-align: center;
+}
+
+.date-cell {
+  flex: 1;
+  min-height: var(--touch-min);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.date-cell:not(:last-child) {
+  margin-right: 1px;
+}
+
+.date-today {
+  border-color: var(--color-primary);
+}
+
+.cell-filled {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.cell-dashed {
+  border-color: var(--color-primary);
+  border-style: dashed;
+  border-width: 2px;
+}
+
+.cell-soft {
+  background-color: var(--color-lavenderSoft);
+  border-color: var(--color-lavenderSoft);
+}
+
+.cell-soft-ring {
+  background-color: var(--color-lavenderSoft);
+  border-color: var(--color-lavender);
+  border-width: 2px;
+}
+
+.cell-today {
+  border-width: 2px;
+}
+
+.cell-corner {
+  position: absolute;
+  top: 0;
+  right: var(--space-xs);
+}
+
+/* Chart */
+.chart {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: var(--space-xs);
+}
+
+.chart-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.chart-track {
+  width: 70%;
+  height: calc(var(--touch-min) * 2);
+  display: flex;
+  justify-content: flex-end;
+  border-radius: calc(var(--radius-sm) / 2);
+  background-color: var(--color-surfaceMuted);
+  overflow: hidden;
+}
+
+.chart-bar {
+  width: 100%;
+  border-radius: calc(var(--radius-sm) / 2);
+  background-color: var(--color-primary);
+}
+
+/* Cell Row */
+.cell-row-cell {
+  border-color: var(--color-border);
+  margin: 0 1px;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  padding-top: var(--space-sm);
+}
+
+.legend-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.legend-swatch {
+  width: var(--space-lg);
+  height: var(--space-lg);
+  border-radius: calc(var(--radius-sm) / 2);
+  border: 1px solid var(--color-border);
+}
+
+/* List Item */
+.list-item {
+  min-height: var(--touch-min);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-text {
+  flex: 1;
+}
+
+.list-text .title {
+  font-size: var(--font-bodyStrong-size);
+  line-height: var(--font-bodyStrong-lineHeight);
+  font-weight: var(--font-bodyStrong-weight);
+  color: var(--color-text);
+}
+
+.list-text .value {
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-lineHeight);
+  font-weight: var(--font-small-weight);
+  color: var(--color-textMuted);
+}
+
+.list-action {
+  min-height: var(--touch-min);
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--space-sm);
+}
+
+.list-action .text {
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-lineHeight);
+  font-weight: var(--font-small-weight);
+  color: var(--color-danger);
+}
+
+/* Note */
+.note {
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-lineHeight);
+  font-weight: var(--font-small-weight);
+}
+
+.note.text-muted {
+  color: var(--color-textMuted);
+}
+
+.note.danger {
+  color: var(--color-danger);
+}
+
+/* Choice */
+.choice {
+  min-height: var(--touch-min);
+  padding: 0 var(--space-lg);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-surfaceMuted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  border: none;
+}
+
+.choice:active {
+  opacity: 0.7;
+}
+
+.choice.selected {
+  background-color: var(--color-primarySoft);
+}
+
+.choice .text {
+  font-size: var(--font-body-size);
+  line-height: var(--font-body-lineHeight);
+  font-weight: var(--font-body-weight);
+}
+
+.choice.selected .text {
+  color: var(--color-primary);
+  font-weight: var(--font-bodyStrong-weight);
+}
+
+/* Switch */
+.switch-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+}
+
+.switch-text {
+  flex: 1;
+}
+
+.switch-text .title {
+  font-size: var(--font-bodyStrong-size);
+  line-height: var(--font-bodyStrong-lineHeight);
+  font-weight: var(--font-bodyStrong-weight);
+  color: var(--color-text);
+}
+
+.switch-text .subtitle {
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-lineHeight);
+  font-weight: var(--font-small-weight);
+  color: var(--color-textMuted);
+}
+
+.switch-input {
+  width: 50px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: var(--color-border);
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.switch-input.checked {
+  background-color: var(--color-primary);
+}
+
+.switch-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
+  background-color: var(--color-surface);
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.15s ease;
+}
+
+.switch-input.checked .switch-thumb {
+  transform: translateX(20px);
+}
+
+/* Index page styles */
+.index-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--space-xxl);
+}
+
+.index-page h1 {
+  font-size: var(--font-title-size);
+  line-height: var(--font-title-lineHeight);
+  font-weight: var(--font-title-weight);
+  color: var(--color-text);
+  margin-bottom: var(--space-xl);
+}
+
+.index-page .description {
+  font-size: var(--font-body-size);
+  line-height: var(--font-body-lineHeight);
+  font-weight: var(--font-body-weight);
+  color: var(--color-textMuted);
+  margin-bottom: var(--space-xxl);
+}
+
+.index-page .screens-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.index-page .screens-list a {
+  display: block;
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  text-decoration: none;
+  color: var(--color-text);
+  font-size: var(--font-body-size);
+  line-height: var(--font-body-lineHeight);
+  font-weight: var(--font-body-weight);
+  transition: background-color 0.15s ease;
+}
+
+.index-page .screens-list a:hover {
+  background-color: var(--color-surfaceMuted);
+}
+
+/* Tab Bar (for visual reference) */
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--tab-bar-height);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.tab-bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+}
+
+.tab-bar-item.active {
+  color: var(--color-primary);
+}
+
+.tab-bar-item .icon {
+  width: 24px;
+  height: 24px;
+}
+
+.tab-bar-item .label {
+  font-size: var(--font-small-size);
+  line-height: var(--font-small-lineHeight);
+  font-weight: var(--font-small-weight);
+}
+
+/* Responsive adjustments */
+@media (max-width: 420px) {
+  .phone-frame {
+    width: 100%;
+    height: auto;
+    min-height: 844px;
+  }
+  
+  .index-page {
+    padding: var(--space-lg);
+  }
+}
+
+/* Utility classes */
+.flex-1 { flex: 1; }
+.text-center { text-align: center; }
+.justify-center { justify-content: center; }
+.align-center { align-items: center; }
+.gap-xs { gap: var(--space-xs); }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+.gap-xl { gap: var(--space-xl); }
+.gap-xxl { gap: var(--space-xxl); }
+
+.mt-xs { margin-top: var(--space-xs); }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+.mt-xxl { margin-top: var(--space-xxl); }
+
+.mb-xs { margin-bottom: var(--space-xs); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mb-xl { margin-bottom: var(--space-xl); }
+.mb-xxl { margin-bottom: var(--space-xxl); }
+
+.mr-xs { margin-right: var(--space-xs); }
+.mr-sm { margin-right: var(--space-sm); }
+.mr-md { margin-right: var(--space-md); }
+.mr-lg { margin-right: var(--space-lg); }
+
+.mr-xs:last-child { margin-right: 0; }
+.mr-sm:last-child { margin-right: 0; }
+.mr-md:last-child { margin-right: 0; }
+.mr-lg:last-child { margin-right: 0; }
+
+</style>
+<style>
+/* Kelaya Redesign — компоненты поверх ../screens/style.css.
+   Токены цветов/отступов/радиусов — только из style.css (зеркало src/ui/theme.ts). */
+
+.phone-frame { position: relative; display: flex; flex-direction: column; }
+.phone-frame .screen-container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+
+/* ---------- Hero-блок статуса (Today) ---------- */
+.hero {
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+  background-color: var(--color-surface);
+  box-shadow: 0 4px 12px rgba(var(--shadow-card-color), var(--shadow-card-opacity));
+}
+.hero .hero-text { flex: 1; display: flex; flex-direction: column; gap: var(--space-xs); }
+.hero .hero-title { font-size: var(--font-heading-size); line-height: var(--font-heading-lineHeight); font-weight: var(--font-heading-weight); color: var(--color-text); }
+.hero .hero-sub { font-size: var(--font-small-size); line-height: var(--font-small-lineHeight); color: var(--color-textMuted); }
+
+/* ---------- Кольцо прогресса (Ring) ---------- */
+.ring {
+  --p: 0; --c: var(--color-primary);
+  width: 96px; height: 96px; border-radius: 50%; flex-shrink: 0;
+  background: conic-gradient(var(--c) calc(var(--p) * 1%), var(--color-surfaceMuted) 0);
+  display: grid; place-items: center;
+}
+.ring .ring-inner {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--color-surface);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+}
+.ring .ring-value { font-size: var(--font-heading-size); line-height: 1.1; font-weight: 700; color: var(--color-text); }
+.ring .ring-label { font-size: 11px; color: var(--color-textMuted); }
+.ring.ring-sm { width: 56px; height: 56px; }
+.ring.ring-sm .ring-inner { width: 42px; height: 42px; }
+.ring.ring-sm .ring-value { font-size: 14px; }
+
+/* ---------- Нижняя панель (TabBar) ---------- */
+.tabbar {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: calc(var(--tab-bar-height) + 18px);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  display: flex; align-items: stretch; justify-content: space-around;
+  padding: 0 var(--space-sm) 18px;
+}
+.tabbar .tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  border: none; background: none; cursor: pointer; min-height: var(--touch-min);
+}
+.tabbar .tab .tab-ico { font-size: 20px; line-height: 1; filter: grayscale(1); opacity: 0.45; }
+.tabbar .tab .tab-label { font-size: 11px; color: var(--color-textMuted); }
+.tabbar .tab.active .tab-ico { filter: none; opacity: 1; }
+.tabbar .tab.active .tab-label { color: var(--color-primary); font-weight: 600; }
+.tabbar .tab-add { flex: 1; display: flex; align-items: center; justify-content: center; }
+.tabbar .add-btn {
+  width: 56px; height: 56px; border-radius: 50%; border: none; cursor: pointer;
+  background: var(--color-primary); color: var(--color-onPrimary);
+  font-size: 28px; line-height: 1; display: grid; place-items: center;
+  transform: translateY(-14px);
+  box-shadow: 0 6px 16px rgba(180, 80, 108, 0.35);
+}
+
+/* ---------- Bottom sheet («＋») ---------- */
+.sheet-backdrop { position: absolute; inset: 0; background: rgba(58, 43, 50, 0.35); }
+.sheet {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: var(--color-surface); border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: var(--space-sm) var(--space-lg) var(--space-xl);
+  display: flex; flex-direction: column; gap: var(--space-md);
+}
+.sheet .handle { width: 40px; height: 4px; border-radius: 2px; background: var(--color-border); margin: 0 auto; }
+.sheet .sheet-title { font-size: var(--font-heading-size); font-weight: var(--font-heading-weight); }
+.chip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-sm); }
+.chip {
+  min-height: 76px; border: none; border-radius: var(--radius-md); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-xs);
+  background: var(--color-surfaceMuted);
+}
+.chip .chip-ico { font-size: 22px; line-height: 1; }
+.chip .chip-label { font-size: var(--font-small-size); font-weight: 600; color: var(--color-text); }
+.chip.tone-primarySoft { background: var(--color-primarySoft); }
+.chip.tone-mintSoft { background: var(--color-mintSoft); }
+.chip.tone-skySoft { background: var(--color-skySoft); }
+.chip.tone-lavenderSoft { background: var(--color-lavenderSoft); }
+.chip.tone-peachSoft { background: var(--color-peachSoft); }
+
+/* ---------- Иконка-плашка трекера (IconPill) ---------- */
+.icon-pill {
+  width: 40px; height: 40px; border-radius: var(--radius-md); flex-shrink: 0;
+  display: grid; place-items: center; font-size: 18px;
+}
+.icon-pill.tone-primarySoft { background: var(--color-primarySoft); }
+.icon-pill.tone-mintSoft { background: var(--color-mintSoft); }
+.icon-pill.tone-skySoft { background: var(--color-skySoft); }
+.icon-pill.tone-lavenderSoft { background: var(--color-lavenderSoft); }
+.icon-pill.tone-peachSoft { background: var(--color-peachSoft); }
+.icon-pill.tone-surfaceMuted { background: var(--color-surfaceMuted); }
+
+/* ---------- Строка списка с плашкой ---------- */
+.track-row { display: flex; align-items: center; gap: var(--space-md); min-height: var(--touch-min); cursor: pointer; }
+.track-row .track-text { flex: 1; display: flex; flex-direction: column; }
+.track-row .track-title { font-size: var(--font-body-size); font-weight: 600; color: var(--color-text); }
+.track-row .track-sub { font-size: var(--font-small-size); color: var(--color-textMuted); }
+.track-row .chev { color: var(--color-textMuted); font-size: 18px; }
+.divider { height: 1px; background: var(--color-border); margin-left: 52px; }
+
+/* ---------- Календарь цикла ---------- */
+.cal-head { display: flex; align-items: center; justify-content: space-between; }
+.cal-title { display: flex; align-items: center; gap: var(--space-sm); font-size: var(--font-heading-size); font-weight: 600; }
+.cal-nav { display: flex; gap: var(--space-sm); }
+.cal-nav button {
+  width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer;
+  background: var(--color-primarySoft); color: var(--color-text); font-size: 16px;
+}
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-dow { text-align: center; font-size: 11px; color: var(--color-textMuted); padding: var(--space-xs) 0; }
+.cal-day {
+  aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center;
+  font-size: 14px; color: var(--color-text); position: relative; background: transparent; border: none;
+}
+.cal-day.dim { color: var(--color-textMuted); opacity: 0.5; }
+.cal-day.period { background: var(--color-primarySoft); }
+.cal-day.period::after { content: "💧"; position: absolute; bottom: 1px; font-size: 7px; }
+.cal-day.fertile { background: var(--color-mintSoft); }
+.cal-day.ovulation { background: var(--color-mint); color: #fff; font-weight: 700; }
+.cal-day.selected { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+.cal-day .dot { position: absolute; top: 2px; right: 2px; width: 6px; height: 6px; border-radius: 50%; background: var(--color-lavender); }
+.legend { display: flex; flex-direction: column; gap: var(--space-sm); }
+.legend-row { display: flex; align-items: center; gap: var(--space-md); min-height: 40px; }
+.legend-swatch { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; }
+.legend-row .legend-text { flex: 1; font-size: var(--font-small-size); color: var(--color-text); }
+.legend-row .legend-text b { font-weight: 600; }
+.eye { border: none; background: none; font-size: 16px; cursor: pointer; opacity: 0.8; }
+
+/* ---------- Таймлайн ленты дня ---------- */
+.timeline { display: flex; flex-direction: column; }
+.tl-item { display: flex; gap: var(--space-md); position: relative; padding-bottom: var(--space-lg); }
+.tl-item::before {
+  content: ""; position: absolute; left: 19px; top: 40px; bottom: 0; width: 2px; background: var(--color-border);
+}
+.tl-item:last-child::before { display: none; }
+.tl-item .icon-pill { border-radius: 50%; }
+.tl-item .tl-body { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.tl-item .tl-title { font-size: var(--font-body-size); font-weight: 600; color: var(--color-text); }
+.tl-item .tl-sub { font-size: var(--font-small-size); color: var(--color-textMuted); }
+
+/* ---------- Питание ---------- */
+.macro-row { display: flex; gap: var(--space-md); justify-content: space-around; }
+.macro { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.macro .macro-name { font-size: 11px; color: var(--color-textMuted); }
+.macro .macro-val { font-size: 13px; font-weight: 600; color: var(--color-text); }
+.meal { display: flex; flex-direction: column; gap: var(--space-xs); }
+.meal-head { display: flex; align-items: center; justify-content: space-between; }
+.meal-name { font-weight: 600; font-size: var(--font-body-size); }
+.meal-kcal { font-size: var(--font-small-size); color: var(--color-textMuted); }
+.meal-add {
+  margin-top: var(--space-xs); align-self: flex-start;
+  min-height: 40px; padding: 0 var(--space-md); border-radius: var(--radius-pill);
+  border: 1px dashed var(--color-border); background: none; cursor: pointer;
+  font-size: var(--font-small-size); color: var(--color-textMuted);
+}
+.food-row { display: flex; align-items: center; gap: var(--space-sm); padding: var(--space-xs) 0; }
+.food-row .food-name { flex: 1; font-size: var(--font-body-size); }
+.food-row .food-kcal { font-size: var(--font-small-size); color: var(--color-textMuted); }
+
+/* ---------- Сегментный переключатель ---------- */
+.segmented { display: flex; background: var(--color-surfaceMuted); border-radius: var(--radius-pill); padding: 4px; gap: 4px; }
+.segmented button {
+  flex: 1; min-height: 40px; border: none; border-radius: var(--radius-pill);
+  background: none; cursor: pointer; font-size: var(--font-small-size); font-weight: 600; color: var(--color-textMuted);
+}
+.segmented button.active { background: var(--color-surface); color: var(--color-primary); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+
+/* ---------- Онбординг ---------- */
+.stage-card {
+  display: flex; align-items: center; gap: var(--space-md);
+  border: 2px solid var(--color-border); border-radius: var(--radius-lg);
+  background: var(--color-surface); padding: var(--space-lg); cursor: pointer; text-align: left; width: 100%;
+}
+.stage-card.selected { border-color: var(--color-primary); }
+.stage-card .stage-name { font-size: var(--font-heading-size); font-weight: 600; }
+.stage-card .stage-desc { font-size: var(--font-small-size); color: var(--color-textMuted); }
+
+/* ---------- Прочее ---------- */
+.gap-xs { display: flex; flex-direction: column; gap: var(--space-xs); }
+.mt-md { margin-top: var(--space-md); }
+.mb-md { margin-bottom: var(--space-md); }
+.section-label { font-size: var(--font-small-size); font-weight: 600; color: var(--color-textMuted); text-transform: uppercase; letter-spacing: 0.04em; }
+.kv { display: flex; justify-content: space-between; align-items: center; min-height: var(--touch-min); }
+.kv .kv-label { font-size: var(--font-body-size); }
+.kv .kv-value { font-size: var(--font-body-size); font-weight: 600; color: var(--color-textMuted); }
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 10px; border-radius: var(--radius-pill);
+  font-size: 11px; font-weight: 600;
+}
+.badge.tone-lavenderSoft { background: var(--color-lavenderSoft); color: var(--color-lavender); }
+.badge.tone-primarySoft { background: var(--color-primarySoft); color: var(--color-primary); }
+.badge.tone-mintSoft { background: var(--color-mintSoft); color: var(--color-mint); }
+
+/* ================= Темы оформления =================
+   Базовая тема «Обычная Нежность» — токены из ../screens/style.css без переопределений.
+   Остальные темы переопределяют только CSS-переменные токенов. */
+
+/* «Закатные Облака» — ночная версия «Обычной Нежности»: тёплый тёмный фон, те же акценты светлее */
+[data-theme="zakat"] {
+  --color-background: #251B23;
+  --color-surface: #3B2C39;
+  --color-surfaceMuted: #483647;
+  --color-border: #6A5260;
+  --color-text: #F6EAEE;
+  --color-textMuted: #CBB6C1;
+  --color-primary: #E58AA5;
+  --color-primarySoft: #4E303C;
+  --color-onPrimary: #33141F;
+  --color-lavender: #B7A6E0;
+  --color-lavenderSoft: #3B3352;
+  --color-mint: #8FCBAD;
+  --color-mintSoft: #29443B;
+  --color-peach: #E2A878;
+  --color-peachSoft: #4E382A;
+  --color-sky: #93BBD9;
+  --color-skySoft: #2C3D4E;
+  --color-danger: #E08A8A;
+  --color-dangerSoft: #4E2E30;
+  --shadow-card-color: 0, 0, 0;
+  --shadow-card-opacity: 0.45;
+}
+
+/* «Строгость Дня» — строгий белый: белый фон, чёткие границы, холодный синий акцент, меньше скругления */
+[data-theme="day"] {
+  --color-background: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surfaceMuted: #F1F2F5;
+  --color-border: #D8DAE0;
+  --color-text: #17181D;
+  --color-textMuted: #5B6068;
+  --color-primary: #2B4ACB;
+  --color-primarySoft: #E3E8FB;
+  --color-onPrimary: #FFFFFF;
+  --color-lavender: #5A4FCF;
+  --color-lavenderSoft: #E9E6FA;
+  --color-mint: #1E7A5A;
+  --color-mintSoft: #DEF0E7;
+  --color-peach: #B05A1E;
+  --color-peachSoft: #F7E3D2;
+  --color-sky: #2B6CB0;
+  --color-skySoft: #DFEAF6;
+  --color-danger: #C02626;
+  --color-dangerSoft: #F9E1E1;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-card-color: 23, 24, 29;
+  --shadow-card-opacity: 0.08;
+}
+
+/* «Строгость Вечер» — строгий тёмный: графитовый фон, белый текст, холодный синий акцент */
+[data-theme="vecher"] {
+  --color-background: #0F1115;
+  --color-surface: #1C212B;
+  --color-surfaceMuted: #262C38;
+  --color-border: #3D4553;
+  --color-text: #ECEEF3;
+  --color-textMuted: #ADB5C2;
+  --color-primary: #7C9EFF;
+  --color-primarySoft: #232C4E;
+  --color-onPrimary: #0B1020;
+  --color-lavender: #A79BF0;
+  --color-lavenderSoft: #262B45;
+  --color-mint: #5FBF9A;
+  --color-mintSoft: #1E3A32;
+  --color-peach: #E0A878;
+  --color-peachSoft: #3D2E22;
+  --color-sky: #6FA8DC;
+  --color-skySoft: #22303F;
+  --color-danger: #E07A7A;
+  --color-dangerSoft: #3A2426;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-card-color: 0, 0, 0;
+  --shadow-card-opacity: 0.5;
+}
+
+/* Точечные переопределения компонентов под тёмные темы */
+[data-theme="zakat"] .tabbar .add-btn,
+[data-theme="vecher"] .tabbar .add-btn { box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5); }
+[data-theme="zakat"] .segmented button.active,
+[data-theme="vecher"] .segmented button.active { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45); }
+[data-theme="zakat"] .cal-day.ovulation,
+[data-theme="vecher"] .cal-day.ovulation { color: #1E2A26; }
+[data-theme="zakat"] .hero .btn,
+[data-theme="vecher"] .hero .btn { color: #241B23; }
+[data-theme="zakat"] .sheet-backdrop,
+[data-theme="vecher"] .sheet-backdrop { background: rgba(0, 0, 0, 0.55); }
+
+</style>
+<style>
+section.page { display: none; }
+section.page.active { display: block; }
+</style>
+</head>
+<body>
+<section class="page" id="p-index">
+
+  <div class="index-page">
+    <h1>Kelaya — редизайн: макеты экранов</h1>
+    <p class="description">
+      Компиляция удачных решений доноров из <code>Материалы/</code> (Flo, Clue, Pemsi, Stardust, Yazio, Trimmi, 28, Clatch, PinkyBloom).
+      Концепция — <code>docs/REDESIGN.md</code>. Токены Kelaya не меняются: цвета и размеры только из <code>src/ui/theme.ts</code>.
+      Старые макеты — в <code>design/screens/</code>.
+    </p>
+
+    <p class="section-label">Каркас</p>
+    <div class="screens-list">
+      <a href="#/onboarding.html">Первый запуск — выбор этапа</a>
+      <a href="#/onboarding-data.html">Первый запуск — минимум данных под этап</a>
+      <a href="#/today-self.html">Сегодня — этап «Я» (кольцо дня цикла)</a>
+      <a href="#/today-expecting.html">Сегодня — этап «Жду» (неделя беременности)</a>
+      <a href="#/today-mother.html">Сегодня — этап «Мама» (последнее кормление + быстрые действия)</a>
+      <a href="#/trackers.html">Трекеры — группы «Ребёнок» / «Я» с плашками и счётчиками</a>
+      <a href="#/add.html">«＋» — bottom sheet быстрой записи</a>
+      <a href="#/knowledge.html">Знания — подборка по возрасту/неделе</a>
+      <a href="#/profile.html">Профиль — этап, дети, приватность</a>
+    </div>
+
+    <p class="section-label mt-md">Экраны модулей</p>
+    <div class="screens-list">
+      <a href="#/tracker.html">Экран трекера (вода): сводка → быстрая запись → лента дня</a>
+      <a href="#/cycle-calendar.html">Календарь цикла — сетка + легенда со слоями</a>
+      <a href="#/day-feed.html">Лента дня ребёнка — таймлайн</a>
+      <a href="#/nutrition-diary.html">Питание — дневник: остаток калорий, кольца БЖУ, приёмы пищи</a>
+      <a href="#/nutrition-add.html">Питание — добавление еды: sheet с 5 методами</a>
+      <a href="#/pregnancy-week.html">Беременность — карточка недели</a>
+    </div>
+
+    <p class="section-label mt-md">Темы оформления</p>
+    <div class="screens-list">
+      <a href="#/themes.html">Сравнение 4 тем: Обычная Нежность · Закатные Облака · Строгость Дня · Строгость Вечер</a>
+    </div>
+
+    <div class="mt-md">
+      <p class="small text-muted">Макеты кликабельные: нижняя панель, карточки, чипы и кнопки ведут на связанные экраны. Тема переключается кнопкой сверху справа на каждой странице.</p>
+      <p class="small text-muted">Для просмотра на телефоне: откройте в браузере и добавьте на главный экран.</p>
+    </div>
+  </div>
+
+</section><section class="page" id="p-onboarding">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs" style="margin-top: var(--space-xxl);">
+        <h1 class="title">Kelaya</h1>
+        <p class="body text-muted">Трекер для женщины, будущей матери и матери с ребёнком. Выберите этап:</p>
+      </div>
+
+      <div class="gap-xs" style="gap: var(--space-md);">
+        <button class="stage-card">
+          <span class="icon-pill tone-primarySoft">◎</span>
+          <span>
+            <span class="stage-name">Я</span><br>
+            <span class="stage-desc">Цикл, питание, вода, вес, гороскоп</span>
+          </span>
+        </button>
+        <button class="stage-card selected">
+          <span class="icon-pill tone-lavenderSoft">◐</span>
+          <span>
+            <span class="stage-name">Жду</span><br>
+            <span class="stage-desc">Развитие малыша по неделям, самочувствие, визиты</span>
+          </span>
+        </button>
+        <button class="stage-card">
+          <span class="icon-pill tone-mintSoft">♥</span>
+          <span>
+            <span class="stage-name">Мама</span><br>
+            <span class="stage-desc">Кормления, сон, подгузники, рост ребёнка</span>
+          </span>
+        </button>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top: auto;">Продолжить</button>
+      <p class="small text-muted" style="text-align: center;">Все данные хранятся только на этом устройстве, без сети.</p>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-onboarding-data">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs" style="margin-top: var(--space-xxl);">
+        <p class="small" style="color: var(--stage-expecting-strong);">Жду</p>
+        <h1 class="title">Пара вопросов — и можно начинать</h1>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Дата предполагаемых родов (ПДР)</p>
+        <div class="date-value" style="display:flex; align-items:center; justify-content:space-between; background: var(--color-surfaceMuted); border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); min-height: var(--touch-min);">
+          <span class="body-strong">12 марта 2027</span>
+          <span style="color: var(--color-textMuted);">📅</span>
+        </div>
+        <p class="small text-muted">Или укажите дату зачатия — посчитаем сами. Можно пропустить и заполнить позже в профиле.</p>
+      </div>
+
+      <div class="card">
+        <p class="card-title">Ваш вес сейчас, кг</p>
+        <div class="date-value" style="display:flex; align-items:center; background: var(--color-surfaceMuted); border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); min-height: var(--touch-min);">
+          <span class="body-strong">64</span>
+        </div>
+        <p class="small text-muted">Нужен для расчёта нормы питания. Можно изменить позже.</p>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top: auto;">Начать</button>
+      <p class="small text-muted" style="text-align: center;">Цели, данные для гороскопа и прочее — позже, по карточкам-подсказкам.</p>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-today-self">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs">
+        <p class="small" style="color: var(--stage-self-strong); font-weight: 600;">Я</p>
+        <h1 class="title">Сегодня</h1>
+      </div>
+
+      <!-- Hero: день цикла (Clue / Pemsi) -->
+      <div class="hero tone-primarySoft" style="background: var(--color-primarySoft);">
+        <div class="ring" style="--p: 93; --c: var(--color-primary);">
+          <div class="ring-inner">
+            <span class="ring-value">26</span>
+            <span class="ring-label">день цикла</span>
+          </div>
+        </div>
+        <div class="hero-text">
+          <span class="hero-title">До месячных 3 дня</span>
+          <span class="hero-sub">Лютеиновая фаза · <span class="badge tone-primarySoft" style="background: var(--color-surface);">прогноз</span></span>
+          <button class="btn btn-primary" style="align-self: flex-start; min-height: 44px; margin-top: var(--space-xs);">Отметить</button>
+        </div>
+      </div>
+
+      <!-- Вода: кольцо (Yazio) -->
+      <div class="card tone-skySoft pressable">
+        <div style="display: flex; align-items: center; gap: var(--space-md);">
+          <div class="ring ring-sm" style="--p: 60; --c: var(--color-sky);">
+            <div class="ring-inner"><span class="ring-value">60%</span></div>
+          </div>
+          <div style="flex: 1;">
+            <p class="card-title">Вода</p>
+            <p class="body-strong">1,2 л из 2 л</p>
+            <p class="small text-muted">Осталось 800 мл</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Питание: остаток калорий (Yazio / Trimmi) -->
+      <div class="card tone-peachSoft pressable">
+        <p class="card-title">Питание</p>
+        <p class="body-strong">Осталось 480 ккал из 1 800</p>
+        <p class="small text-muted">Б 82/110 г · Ж 45/60 г · У 140/220 г</p>
+      </div>
+
+      <!-- Гороскоп -->
+      <div class="card pressable">
+        <p class="card-title">Гороскоп на сегодня <span class="badge tone-lavenderSoft">развлечение</span></p>
+        <p class="body">День подходит для спокойных дел: транзит Луны поддерживает привычный ритм.</p>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="tab active"><span class="tab-ico">☀</span><span class="tab-label">Сегодня</span></button>
+      <button class="tab"><span class="tab-ico">▦</span><span class="tab-label">Трекеры</span></button>
+      <div class="tab-add"><button class="add-btn">+</button></div>
+      <button class="tab"><span class="tab-ico">📖</span><span class="tab-label">Знания</span></button>
+      <button class="tab"><span class="tab-ico">👤</span><span class="tab-label">Профиль</span></button>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-today-expecting">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs">
+        <p class="small" style="color: var(--stage-expecting-strong); font-weight: 600;">Жду</p>
+        <h1 class="title">Сегодня</h1>
+      </div>
+
+      <!-- Hero: неделя беременности (PinkyBloom / Clatch) -->
+      <div class="hero" style="background: var(--color-lavenderSoft);">
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <span class="number" style="color: var(--color-lavender);">24</span>
+          <span class="small" style="color: var(--color-lavender);">неделя</span>
+        </div>
+        <div class="hero-text">
+          <span class="hero-title">До ПДР 112 дней</span>
+          <span class="hero-sub">2-й триместр · Малыш ≈ 30 см, ≈ 600 г</span>
+          <button class="btn" style="align-self: flex-start; min-height: 44px; margin-top: var(--space-xs); background: var(--color-lavender); color: #fff;">Шевеления: отметить</button>
+        </div>
+      </div>
+
+      <!-- Быстрые действия (чипы, Pemsi «чек-ин») -->
+      <div class="chip-grid">
+        <button class="chip tone-skySoft"><span class="chip-ico">💧</span><span class="chip-label">Вода +250</span></button>
+        <button class="chip tone-lavenderSoft"><span class="chip-ico">👣</span><span class="chip-label">Шевеление</span></button>
+        <button class="chip tone-lavenderSoft"><span class="chip-ico">⏱</span><span class="chip-label">Схватки</span></button>
+        <button class="chip tone-lavenderSoft"><span class="chip-ico">🩺</span><span class="chip-label">Симптом</span></button>
+        <button class="chip tone-lavenderSoft"><span class="chip-ico">⚖</span><span class="chip-label">Вес</span></button>
+        <button class="chip tone-lavenderSoft"><span class="chip-ico">📅</span><span class="chip-label">Визит</span></button>
+      </div>
+
+      <!-- Вода -->
+      <div class="card tone-skySoft pressable">
+        <div style="display: flex; align-items: center; gap: var(--space-md);">
+          <div class="ring ring-sm" style="--p: 45; --c: var(--color-sky);">
+            <div class="ring-inner"><span class="ring-value">45%</span></div>
+          </div>
+          <div style="flex: 1;">
+            <p class="card-title">Вода</p>
+            <p class="body-strong">1,35 л из 3 л</p>
+            <p class="small text-muted">Цель выше при беременности</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Самочувствие -->
+      <div class="card pressable">
+        <p class="card-title">Самочувствие</p>
+        <p class="body-strong">Сегодня: спокойная, энергичная</p>
+        <p class="small text-muted">Настроение и симптомы — в трекере</p>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="tab active"><span class="tab-ico">☀</span><span class="tab-label">Сегодня</span></button>
+      <button class="tab"><span class="tab-ico">▦</span><span class="tab-label">Трекеры</span></button>
+      <div class="tab-add"><button class="add-btn">+</button></div>
+      <button class="tab"><span class="tab-ico">📖</span><span class="tab-label">Знания</span></button>
+      <button class="tab"><span class="tab-ico">👤</span><span class="tab-label">Профиль</span></button>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-today-mother">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs">
+        <p class="small" style="color: var(--stage-mother-strong); font-weight: 600;">Мама</p>
+        <h1 class="title">Сегодня</h1>
+      </div>
+
+      <!-- Переключатель детей (несколько детей) -->
+      <div class="row wrap" style="gap: var(--space-sm);">
+        <button class="quick-btn tone-mintSoft" style="min-width: 80px; flex: 0 1 auto;"><span class="label">Алиса</span></button>
+        <button class="quick-btn tone-surfaceMuted" style="min-width: 80px; flex: 0 1 auto;"><span class="label">Боб</span></button>
+      </div>
+
+      <!-- Hero: последнее кормление + таймер (mamsapp / Baby+) -->
+      <div class="hero" style="background: var(--color-mintSoft);">
+        <div class="hero-text">
+          <p class="card-title">Последнее кормление</p>
+          <span class="hero-title">Грудь, левая · 12 мин</span>
+          <span class="hero-sub">2 ч 15 мин назад · сегодня 6 раз</span>
+          <div class="row" style="gap: var(--space-sm); margin-top: var(--space-xs);">
+            <button class="btn" style="min-height: 44px; background: var(--color-mint); color: #fff;">Таймер кормления</button>
+            <button class="btn btn-soft" style="min-height: 44px;">Записать</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Быстрые действия в один тап -->
+      <div class="chip-grid">
+        <button class="chip tone-mintSoft"><span class="chip-ico">🍼</span><span class="chip-label">Кормление</span></button>
+        <button class="chip tone-mintSoft"><span class="chip-ico">😴</span><span class="chip-label">Сон</span></button>
+        <button class="chip tone-mintSoft"><span class="chip-ico">🧷</span><span class="chip-label">Подгузник</span></button>
+        <button class="chip tone-skySoft"><span class="chip-ico">💧</span><span class="chip-label">Вода +250</span></button>
+        <button class="chip tone-primarySoft"><span class="chip-ico">🙂</span><span class="chip-label">Настроение</span></button>
+        <button class="chip tone-peachSoft"><span class="chip-ico">📏</span><span class="chip-label">Рост/вес</span></button>
+      </div>
+
+      <!-- Сон и подгузник: компактные карточки со счётчиками -->
+      <div class="row" style="gap: var(--space-sm);">
+        <div class="card tone-mintSoft pressable" style="flex: 1;">
+          <p class="card-title">Сон</p>
+          <p class="body-strong">2 ч 30 мин</p>
+          <p class="small text-muted">Последний сон 45 мин назад</p>
+        </div>
+        <div class="card tone-mintSoft pressable" style="flex: 1;">
+          <p class="card-title">Подгузник</p>
+          <p class="body-strong">3 смены</p>
+          <p class="small text-muted">Мокрых 2 · грязных 1</p>
+        </div>
+      </div>
+
+      <!-- Скачок роста -->
+      <div class="card pressable">
+        <p class="card-title">Скачок роста <span class="badge tone-primarySoft">ориентир</span></p>
+        <p class="body-strong">Скоро скачок: около 8 недель</p>
+        <p class="small text-muted">Малыш может чаще просить грудь и капризничать. Сроки у детей расходятся.</p>
+      </div>
+
+      <!-- Лента дня -->
+      <div class="card pressable">
+        <div class="kv" style="min-height: 0;">
+          <span class="body-strong">Лента дня</span>
+          <span class="small text-muted">Все записи по времени · Алиса ›</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="tab active"><span class="tab-ico">☀</span><span class="tab-label">Сегодня</span></button>
+      <button class="tab"><span class="tab-ico">▦</span><span class="tab-label">Трекеры</span></button>
+      <div class="tab-add"><button class="add-btn">+</button></div>
+      <button class="tab"><span class="tab-ico">📖</span><span class="tab-label">Знания</span></button>
+      <button class="tab"><span class="tab-ico">👤</span><span class="tab-label">Профиль</span></button>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-trackers">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs">
+        <h1 class="title">Трекеры</h1>
+      </div>
+
+      <!-- Группа «Ребёнок» (Pemsi / 28: иконки-плашки + счётчик) -->
+      <p class="section-label">Алиса · 8 месяцев</p>
+      <div class="card" style="gap: 0; padding: var(--space-sm) var(--space-lg);">
+        <div class="track-row"><span class="icon-pill tone-mintSoft">🍼</span><span class="track-text"><span class="track-title">Кормление</span><span class="track-sub">Сегодня: 6</span></span><span class="chev">›</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-mintSoft">😴</span><span class="track-text"><span class="track-title">Сон</span><span class="track-sub">Сегодня: 2 ч 30 мин</span></span><span class="chev">›</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-mintSoft">🧷</span><span class="track-text"><span class="track-title">Подгузник</span><span class="track-sub">Сегодня: 3</span></span><span class="chev">›</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-peachSoft">📏</span><span class="track-text"><span class="track-title">Рост и вес</span><span class="track-sub">Последнее: 68 см · 8,1 кг</span></span><span class="chev">›</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-mintSoft">🌡</span><span class="track-text"><span class="track-title">Здоровье</span><span class="track-sub">Температура, лекарства, прививки</span></span><span class="chev">›</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-mintSoft">🧸</span><span class="track-text"><span class="track-title">События</span><span class="track-sub">Первая улыбка · 12 октября</span></span><span class="chev">›</span></div>
+      </div>
+
+      <!-- Группа «Я» -->
+      <p class="section-label">Я</p>
+      <div class="card" style="gap: 0; padding: var(--space-sm) var(--space-lg);">
+        <div class="track-row"><span class="icon-pill tone-skySoft">💧</span><span class="track-text"><span class="track-title">Вода</span><span class="track-sub">Сегодня: 1,2 л из 2 л</span></span><span class="chev">›</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-primarySoft">◎</span><span class="track-text"><span class="track-title">Цикл</span><span class="track-sub">День 26 · до месячных 3 дня</span></span><span class="chev">›</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-peachSoft">🍽</span><span class="track-text"><span class="track-title">Питание</span><span class="track-sub">Осталось 480 ккал</span></span><span class="chev">›</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-primarySoft">🙂</span><span class="track-text"><span class="track-title">Настроение</span><span class="track-sub">Сегодня: спокойная</span></span><span class="chev">›</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-skySoft">⚖</span><span class="track-text"><span class="track-title">Вес</span><span class="track-sub">Последнее: 64 кг · 20 ноября</span></span><span class="chev">›</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-lavenderSoft">💊</span><span class="track-text"><span class="track-title">Лекарства и добавки</span><span class="track-sub">Курс: утром и вечером</span></span><span class="chev">›</span></div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="tab"><span class="tab-ico">☀</span><span class="tab-label">Сегодня</span></button>
+      <button class="tab active"><span class="tab-ico">▦</span><span class="tab-label">Трекеры</span></button>
+      <div class="tab-add"><button class="add-btn">+</button></div>
+      <button class="tab"><span class="tab-ico">📖</span><span class="tab-label">Знания</span></button>
+      <button class="tab"><span class="tab-ico">👤</span><span class="tab-label">Профиль</span></button>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-add">
+
+  <div class="phone-frame">
+    <div class="screen-container" style="opacity: 0.45;">
+      <div class="gap-xs">
+        <p class="small" style="color: var(--stage-mother-strong); font-weight: 600;">Мама</p>
+        <h1 class="title">Сегодня</h1>
+      </div>
+      <div class="hero" style="background: var(--color-mintSoft);">
+        <div class="hero-text">
+          <p class="card-title">Последнее кормление</p>
+          <span class="hero-title">Грудь, левая · 12 мин</span>
+          <span class="hero-sub">2 ч 15 мин назад</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom sheet быстрой записи (Pemsi «чек-ин», Flo quick log) -->
+    <div class="sheet-backdrop"></div>
+    <div class="sheet">
+      <div class="handle"></div>
+      <p class="sheet-title">Быстрая запись · Алиса</p>
+      <div class="chip-grid">
+        <button class="chip tone-mintSoft"><span class="chip-ico">🍼</span><span class="chip-label">Кормление</span></button>
+        <button class="chip tone-mintSoft"><span class="chip-ico">😴</span><span class="chip-label">Сон начался</span></button>
+        <button class="chip tone-mintSoft"><span class="chip-ico">🧷</span><span class="chip-label">Подгузник</span></button>
+        <button class="chip tone-skySoft"><span class="chip-ico">💧</span><span class="chip-label">Вода +250 мл</span></button>
+        <button class="chip tone-primarySoft"><span class="chip-ico">🙂</span><span class="chip-label">Настроение</span></button>
+        <button class="chip tone-peachSoft"><span class="chip-ico">🌡</span><span class="chip-label">Температура</span></button>
+      </div>
+      <div class="track-row" style="min-height: 44px;">
+        <span class="icon-pill tone-surfaceMuted">⋯</span>
+        <span class="track-text"><span class="track-title">Все трекеры</span><span class="track-sub">Открыть вкладку «Трекеры»</span></span>
+        <span class="chev">›</span>
+      </div>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-knowledge">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs">
+        <h1 class="title">Знания</h1>
+        <p class="small text-muted">Подборка для Алисы · 8 месяцев</p>
+      </div>
+
+      <!-- Поиск -->
+      <div class="date-value" style="display:flex; align-items:center; gap: var(--space-sm); background: var(--color-surfaceMuted); border-radius: var(--radius-pill); padding: 0 var(--space-lg); min-height: var(--touch-min);">
+        <span style="color: var(--color-textMuted);">🔍</span>
+        <span class="text-muted">Поиск по статьям</span>
+      </div>
+
+      <!-- Категории навыков -->
+      <div class="segmented">
+        <button class="active">Вам сейчас</button>
+        <button>Моторика</button>
+        <button>Сон</button>
+        <button>Питание</button>
+      </div>
+
+      <p class="section-label">На этой неделе малыша</p>
+      <div class="card pressable">
+        <p class="card-title">8 месяцев <span class="badge tone-mintSoft">моторика</span></p>
+        <p class="body-strong">Ползание и «dai»: как развивается движение</p>
+        <p class="small text-muted">Источник: ВОЗ, 2019 · проверено 2026-11-20</p>
+      </div>
+      <div class="card pressable">
+        <p class="card-title">8 месяцев <span class="badge tone-skySoft">сон</span></p>
+        <p class="body-strong">Ночные пробуждения в 8 месяцев — что нормально</p>
+        <p class="small text-muted">Источник: AASM, 2016 · проверено 2026-11-20</p>
+      </div>
+
+      <p class="section-label">Кормление</p>
+      <div class="card pressable">
+        <p class="card-title">Прикорм <span class="badge tone-peachSoft">питание</span></p>
+        <p class="body-strong">Что можно в 8 месяцев: текстуры и порции</p>
+        <p class="small text-muted">Источник: UNICEF Baby Friendly · проверено 2026-11-18</p>
+      </div>
+      <div class="card pressable">
+        <p class="card-title">Скачок роста около 8 недель</p>
+        <p class="body-strong">Почему малыш чаще просит грудь</p>
+        <p class="small text-muted">Ориентир, не диагноз · сроки у детей расходятся</p>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="tab"><span class="tab-ico">☀</span><span class="tab-label">Сегодня</span></button>
+      <button class="tab"><span class="tab-ico">▦</span><span class="tab-label">Трекеры</span></button>
+      <div class="tab-add"><button class="add-btn">+</button></div>
+      <button class="tab active"><span class="tab-ico">📖</span><span class="tab-label">Знания</span></button>
+      <button class="tab"><span class="tab-ico">👤</span><span class="tab-label">Профиль</span></button>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-profile">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs">
+        <h1 class="title">Профиль</h1>
+      </div>
+
+      <!-- Этап -->
+      <div class="card" style="background: var(--color-mintSoft);">
+        <div class="kv" style="min-height: 0;">
+          <span class="card-title">Этап</span>
+          <span class="badge tone-mintSoft" style="background: var(--color-surface);">Мама</span>
+        </div>
+        <p class="body-strong">У вас есть ребёнок</p>
+        <button class="btn btn-soft" style="align-self: flex-start; min-height: 44px;">Изменить этап</button>
+      </div>
+
+      <!-- Дети -->
+      <p class="section-label">Дети</p>
+      <div class="card" style="gap: 0; padding: var(--space-sm) var(--space-lg);">
+        <div class="track-row">
+          <span class="icon-pill tone-mintSoft">👶</span>
+          <span class="track-text">
+            <span class="track-title">Алиса</span>
+            <span class="track-sub">12 марта 2026 · 8 месяцев · 68 см · 8,1 кг</span>
+          </span>
+          <span class="chev">›</span>
+        </div>
+        <div class="divider"></div>
+        <div class="track-row">
+          <span class="icon-pill tone-surfaceMuted">＋</span>
+          <span class="track-text"><span class="track-title">Добавить ребёнка</span></span>
+        </div>
+      </div>
+
+      <!-- Приватность — видимая фича (все доноры) -->
+      <p class="section-label">Приватность и данные</p>
+      <div class="card" style="gap: 0; padding: var(--space-sm) var(--space-lg);">
+        <div class="track-row">
+          <span class="icon-pill tone-lavenderSoft">🔒</span>
+          <span class="track-text"><span class="track-title">Все данные на этом устройстве</span><span class="track-sub">Без сети, без аналитики</span></span>
+        </div>
+        <div class="divider"></div>
+        <div class="track-row">
+          <span class="icon-pill tone-lavenderSoft">📄</span>
+          <span class="track-text"><span class="track-title">Экспорт для врача (PDF)</span></span>
+          <span class="chev">›</span>
+        </div>
+        <div class="divider"></div>
+        <div class="track-row">
+          <span class="icon-pill tone-dangerSoft">🗑</span>
+          <span class="track-text"><span class="track-title" style="color: var(--color-danger);">Удалить все данные</span></span>
+        </div>
+      </div>
+
+      <!-- Настройки -->
+      <p class="section-label">Настройки</p>
+      <div class="card" style="gap: 0; padding: var(--space-sm) var(--space-lg);">
+        <div class="kv" style="min-height: var(--touch-min);">
+          <span class="kv-label">Гороскоп на «Сегодня»</span>
+          <span class="kv-value" style="color: var(--color-mint);">Вкл</span>
+        </div>
+        <div class="divider"></div>
+        <div class="kv">
+          <span class="kv-label">Заставка поддержки</span>
+          <span class="kv-value" style="color: var(--color-mint);">Вкл</span>
+        </div>
+        <div class="divider"></div>
+        <div class="track-row">
+          <span class="icon-pill tone-surfaceMuted">🔔</span>
+          <span class="track-text"><span class="track-title">Напоминания</span><span class="track-sub">Вода, кормление, лекарства</span></span>
+          <span class="chev">›</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="tab"><span class="tab-ico">☀</span><span class="tab-label">Сегодня</span></button>
+      <button class="tab"><span class="tab-ico">▦</span><span class="tab-label">Трекеры</span></button>
+      <div class="tab-add"><button class="add-btn">+</button></div>
+      <button class="tab"><span class="tab-ico">📖</span><span class="tab-label">Знания</span></button>
+      <button class="tab active"><span class="tab-ico">👤</span><span class="tab-label">Профиль</span></button>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-tracker">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <!-- Шапка: DayBar «‹ день ›» (WAVE-4) -->
+      <div class="gap-xs">
+        <div class="cal-head">
+          <h1 class="title" style="font-size: var(--font-heading-size);">Вода</h1>
+          <div class="cal-nav">
+            <button>‹</button><button style="width:auto; padding: 0 var(--space-md); border-radius: var(--radius-pill); font-size: 13px;">24 ноября</button><button>›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Сводка-hero: кольцо цели -->
+      <div class="hero tone-skySoft" style="background: var(--color-skySoft);">
+        <div class="ring" style="--p: 60; --c: var(--color-sky);">
+          <div class="ring-inner">
+            <span class="ring-value">1,2</span>
+            <span class="ring-label">из 2 л</span>
+          </div>
+        </div>
+        <div class="hero-text">
+          <span class="hero-title">Осталось 800 мл</span>
+          <span class="hero-sub">Сегодня выпито 1,2 л · цель 2 л</span>
+        </div>
+      </div>
+
+      <!-- Быстрая запись: быстрые объёмы (Yazio) -->
+      <div class="card">
+        <p class="card-title">Быстро добавить</p>
+        <div class="row wrap">
+          <button class="quick-btn tone-skySoft" style="min-width: 72px;"><span class="label">+200</span><span class="hint">мл</span></button>
+          <button class="quick-btn tone-skySoft" style="min-width: 72px;"><span class="label">+250</span><span class="hint">мл</span></button>
+          <button class="quick-btn tone-skySoft" style="min-width: 72px;"><span class="label">+300</span><span class="hint">мл</span></button>
+          <button class="quick-btn tone-skySoft" style="min-width: 72px;"><span class="label">+500</span><span class="hint">мл</span></button>
+        </div>
+        <button class="btn btn-primary">Добавить запись</button>
+      </div>
+
+      <!-- Лента за сегодня -->
+      <p class="section-label">Сегодня</p>
+      <div class="card" style="gap: 0; padding: var(--space-sm) var(--space-lg);">
+        <div class="track-row"><span class="icon-pill tone-skySoft">💧</span><span class="track-text"><span class="track-title">250 мл</span><span class="track-sub">14:32</span></span><span class="chev" style="color: var(--color-danger);">✕</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-skySoft">💧</span><span class="track-text"><span class="track-title">300 мл</span><span class="track-sub">12:05</span></span><span class="chev" style="color: var(--color-danger);">✕</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-skySoft">💧</span><span class="track-text"><span class="track-title">500 мл</span><span class="track-sub">09:40</span></span><span class="chev" style="color: var(--color-danger);">✕</span></div>
+        <div class="divider"></div>
+        <div class="track-row"><span class="icon-pill tone-skySoft">💧</span><span class="track-text"><span class="track-title">250 мл</span><span class="track-sub">08:10</span></span><span class="chev" style="color: var(--color-danger);">✕</span></div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="tab"><span class="tab-ico">☀</span><span class="tab-label">Сегодня</span></button>
+      <button class="tab active"><span class="tab-ico">▦</span><span class="tab-label">Трекеры</span></button>
+      <div class="tab-add"><button class="add-btn">+</button></div>
+      <button class="tab"><span class="tab-ico">📖</span><span class="tab-label">Знания</span></button>
+      <button class="tab"><span class="tab-ico">👤</span><span class="tab-label">Профиль</span></button>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-cycle-calendar">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs">
+        <h1 class="title" style="font-size: var(--font-heading-size);">Цикл</h1>
+      </div>
+
+      <!-- Месяц (Pemsi / Clue: сетка + легенда) -->
+      <div class="card">
+        <div class="cal-head">
+          <div class="cal-title"><span>📅</span> ноябрь 2026</div>
+          <div class="cal-nav"><button>‹</button><button>›</button></div>
+        </div>
+        <div class="cal-grid">
+          <span class="cal-dow">Пн</span><span class="cal-dow">Вт</span><span class="cal-dow">Ср</span><span class="cal-dow">Чт</span><span class="cal-dow">Пт</span><span class="cal-dow">Сб</span><span class="cal-dow">Вс</span>
+          <button class="cal-day dim">27</button><button class="cal-day dim">28</button><button class="cal-day dim">29</button><button class="cal-day dim">30</button><button class="cal-day dim">31</button>
+          <button class="cal-day period">1</button><button class="cal-day period">2</button><button class="cal-day period">3</button>
+          <button class="cal-day">4</button><button class="cal-day">5</button><button class="cal-day">6</button><button class="cal-day">7</button>
+          <button class="cal-day">8</button><button class="cal-day">9</button>
+          <button class="cal-day fertile">10</button><button class="cal-day fertile">11</button><button class="cal-day fertile">12</button><button class="cal-day fertile">13</button>
+          <button class="cal-day ovulation">14</button>
+          <button class="cal-day">15</button><button class="cal-day">16</button><button class="cal-day">17</button>
+          <button class="cal-day selected">18<span class="dot"></span></button><button class="cal-day">19</button>
+          <button class="cal-day">20</button><button class="cal-day">21</button><button class="cal-day">22</button><button class="cal-day">23</button>
+          <button class="cal-day">24</button><button class="cal-day">25</button><button class="cal-day">26</button>
+          <button class="cal-day period">27</button><button class="cal-day period">28</button><button class="cal-day period">29</button><button class="cal-day period">30</button>
+        </div>
+      </div>
+
+      <!-- Выбранный день -->
+      <div class="card tone-primarySoft">
+        <div class="kv" style="min-height: 0;">
+          <span class="body-strong">18 ноября · день цикла 18</span>
+          <span class="badge" style="background: var(--color-surface); color: var(--color-primary);">прогноз</span>
+        </div>
+        <p class="small text-muted">Лютеиновая фаза. До следующих месячных: 10 дней (прогноз по вашей истории).</p>
+        <div class="row wrap">
+          <button class="quick-btn" style="min-width: 110px; background: var(--color-surface);"><span class="label">Месячные</span></button>
+          <button class="quick-btn" style="min-width: 110px; background: var(--color-surface);"><span class="label">Симптом</span></button>
+          <button class="quick-btn" style="min-width: 110px; background: var(--color-surface);"><span class="label">Настроение</span></button>
+        </div>
+      </div>
+
+      <!-- Легенда со слоями (Pemsi) -->
+      <p class="section-label">Легенда</p>
+      <div class="card legend">
+        <div class="legend-row"><span class="legend-swatch" style="background: var(--color-primarySoft);"></span><span class="legend-text"><b>Период</b> — отмеченные дни</span><button class="eye">👁</button></div>
+        <div class="legend-row"><span class="legend-swatch" style="background: var(--color-mintSoft);"></span><span class="legend-text"><b>Фертильное окно</b> — высокая вероятность зачатия</span><button class="eye">👁</button></div>
+        <div class="legend-row"><span class="legend-swatch" style="background: var(--color-mint);"></span><span class="legend-text"><b>Овуляция</b> — расчётный день</span><button class="eye">👁</button></div>
+        <div class="legend-row"><span class="legend-swatch" style="background: var(--color-lavender); width: 8px; height: 8px; margin: 0 10px;"></span><span class="legend-text"><b>Отметки</b> — симптомы, настроение</span><button class="eye">👁</button></div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="tab"><span class="tab-ico">☀</span><span class="tab-label">Сегодня</span></button>
+      <button class="tab active"><span class="tab-ico">▦</span><span class="tab-label">Трекеры</span></button>
+      <div class="tab-add"><button class="add-btn">+</button></div>
+      <button class="tab"><span class="tab-ico">📖</span><span class="tab-label">Знания</span></button>
+      <button class="tab"><span class="tab-ico">👤</span><span class="tab-label">Профиль</span></button>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-day-feed">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs">
+        <div class="cal-head">
+          <h1 class="title" style="font-size: var(--font-heading-size);">Лента дня · Алиса</h1>
+          <div class="cal-nav">
+            <button>‹</button><button style="width:auto; padding: 0 var(--space-md); border-radius: var(--radius-pill); font-size: 13px;">24 ноября</button><button>›</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="section-label">Сегодня, 24 ноября</p>
+      <div class="card">
+        <div class="timeline">
+          <div class="tl-item">
+            <span class="icon-pill tone-mintSoft">😴</span>
+            <span class="tl-body"><span class="tl-title">Сон начался</span><span class="tl-sub">21:40 · ночной сон</span></span>
+          </div>
+          <div class="tl-item">
+            <span class="icon-pill tone-mintSoft">🍼</span>
+            <span class="tl-body"><span class="tl-title">Кормление — грудь, левая</span><span class="tl-sub">21:05 · 12 мин</span></span>
+          </div>
+          <div class="tl-item">
+            <span class="icon-pill tone-mintSoft">🧷</span>
+            <span class="tl-body"><span class="tl-title">Подгузник — мокрый</span><span class="tl-sub">18:32</span></span>
+          </div>
+          <div class="tl-item">
+            <span class="icon-pill tone-mintSoft">😴</span>
+            <span class="tl-body"><span class="tl-title">Проснулась</span><span class="tl-sub">18:05 · сон 2 ч 35 мин</span></span>
+          </div>
+          <div class="tl-item">
+            <span class="icon-pill tone-mintSoft">🍼</span>
+            <span class="tl-body"><span class="tl-title">Кормление — бутылочка, смесь</span><span class="tl-sub">15:30 · 90 мл</span></span>
+          </div>
+          <div class="tl-item">
+            <span class="icon-pill tone-peachSoft">🍽</span>
+            <span class="tl-body"><span class="tl-title">Прикорм — пюре из тыквы</span><span class="tl-sub">13:10 · 60 г · реакция обычная</span></span>
+          </div>
+          <div class="tl-item">
+            <span class="icon-pill tone-skySoft">💧</span>
+            <span class="tl-body"><span class="tl-title">Вода — мама</span><span class="tl-sub">12:05 · 300 мл</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="tab active"><span class="tab-ico">☀</span><span class="tab-label">Сегодня</span></button>
+      <button class="tab"><span class="tab-ico">▦</span><span class="tab-label">Трекеры</span></button>
+      <div class="tab-add"><button class="add-btn">+</button></div>
+      <button class="tab"><span class="tab-ico">📖</span><span class="tab-label">Знания</span></button>
+      <button class="tab"><span class="tab-ico">👤</span><span class="tab-label">Профиль</span></button>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-nutrition-diary">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs">
+        <div class="cal-head">
+          <h1 class="title" style="font-size: var(--font-heading-size);">Питание</h1>
+          <div class="cal-nav">
+            <button>‹</button><button style="width:auto; padding: 0 var(--space-md); border-radius: var(--radius-pill); font-size: 13px;">24 ноября</button><button>›</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero: остаток калорий + кольца БЖУ (Yazio / Trimmi; на «Жду»/«Мама» БЖУ первым) -->
+      <div class="hero" style="background: var(--color-peachSoft); flex-direction: column; align-items: stretch; gap: var(--space-md);">
+        <div style="display: flex; align-items: center; gap: var(--space-md);">
+          <div class="ring" style="--p: 73; --c: var(--color-peach);">
+            <div class="ring-inner">
+              <span class="ring-value">1 320</span>
+              <span class="ring-label">из 1 800 ккал</span>
+            </div>
+          </div>
+          <div class="hero-text">
+            <span class="hero-title">Осталось 480 ккал</span>
+            <span class="hero-sub">Цель на сегодня · 2-й триместр</span>
+          </div>
+        </div>
+        <div class="macro-row">
+          <div class="macro">
+            <div class="ring ring-sm" style="--p: 75; --c: var(--color-mint);"><div class="ring-inner"><span class="ring-value">82</span></div></div>
+            <span class="macro-name">Белки, г</span><span class="macro-val">82 / 110</span>
+          </div>
+          <div class="macro">
+            <div class="ring ring-sm" style="--p: 75; --c: var(--color-peach);"><div class="ring-inner"><span class="ring-value">45</span></div></div>
+            <span class="macro-name">Жиры, г</span><span class="macro-val">45 / 60</span>
+          </div>
+          <div class="macro">
+            <div class="ring ring-sm" style="--p: 64; --c: var(--color-sky);"><div class="ring-inner"><span class="ring-value">140</span></div></div>
+            <span class="macro-name">Углеводы, г</span><span class="macro-val">140 / 220</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Приёмы пищи -->
+      <div class="card meal">
+        <div class="meal-head"><span class="meal-name">Завтрак</span><span class="meal-kcal">520 ккал</span></div>
+        <div class="food-row"><span class="food-name">Каша овсяная на молоке</span><span class="food-kcal">320 ккал · 300 г</span></div>
+        <div class="food-row"><span class="food-name">Творог 5%</span><span class="food-kcal">140 ккал · 100 г</span></div>
+        <div class="food-row"><span class="food-name">Чай с молоком</span><span class="food-kcal">60 ккал · 250 мл</span></div>
+        <button class="meal-add">＋ Добавить продукт</button>
+      </div>
+
+      <div class="card meal">
+        <div class="meal-head"><span class="meal-name">Обед</span><span class="meal-kcal">640 ккал</span></div>
+        <div class="food-row"><span class="food-name">Суп куриный с вермишелью</span><span class="food-kcal">380 ккал · 350 г</span></div>
+        <div class="food-row"><span class="food-name">Хлеб ржаной</span><span class="food-kcal">90 ккал · 40 г</span></div>
+        <button class="meal-add">＋ Добавить продукт</button>
+      </div>
+
+      <div class="card meal">
+        <div class="meal-head"><span class="meal-name">Ужин</span><span class="meal-kcal">160 ккал</span></div>
+        <div class="food-row"><span class="food-name">Творожная запеканка</span><span class="food-kcal">160 ккал · 120 г</span></div>
+        <button class="meal-add">＋ Добавить продукт</button>
+      </div>
+
+      <div class="card meal">
+        <div class="meal-head"><span class="meal-name">Перекусы</span><span class="meal-kcal">0 ккал</span></div>
+        <button class="meal-add">＋ Добавить продукт</button>
+      </div>
+
+      <!-- Вода рядом (Yazio) -->
+      <div class="card tone-skySoft pressable">
+        <div class="kv" style="min-height: 0;">
+          <span><span class="card-title">Вода</span><br><span class="body-strong">1,2 л из 3 л</span></span>
+          <span class="small text-muted">Осталось 1,8 л ›</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="tab"><span class="tab-ico">☀</span><span class="tab-label">Сегодня</span></button>
+      <button class="tab active"><span class="tab-ico">▦</span><span class="tab-label">Трекеры</span></button>
+      <div class="tab-add"><button class="add-btn">+</button></div>
+      <button class="tab"><span class="tab-ico">📖</span><span class="tab-label">Знания</span></button>
+      <button class="tab"><span class="tab-ico">👤</span><span class="tab-label">Профиль</span></button>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-nutrition-add">
+
+  <div class="phone-frame">
+    <div class="screen-container" style="opacity: 0.45;">
+      <div class="gap-xs">
+        <h1 class="title" style="font-size: var(--font-heading-size);">Питание</h1>
+      </div>
+      <div class="hero" style="background: var(--color-peachSoft);">
+        <div class="ring" style="--p: 73; --c: var(--color-peach);">
+          <div class="ring-inner"><span class="ring-value">1 320</span><span class="ring-label">ккал</span></div>
+        </div>
+        <div class="hero-text"><span class="hero-title">Осталось 480 ккал</span></div>
+      </div>
+    </div>
+
+    <!-- Sheet добавления еды: 5 методов (nutrition_ui_kit) -->
+    <div class="sheet-backdrop"></div>
+    <div class="sheet">
+      <div class="handle"></div>
+      <p class="sheet-title">Добавить в «Обед»</p>
+      <div class="chip-grid">
+        <button class="chip tone-peachSoft"><span class="chip-ico">🔍</span><span class="chip-label">Поиск</span></button>
+        <button class="chip tone-peachSoft"><span class="chip-ico">▦</span><span class="chip-label">Штрихкод</span></button>
+        <button class="chip tone-peachSoft"><span class="chip-ico">📷</span><span class="chip-label">Фото блюда</span></button>
+        <button class="chip tone-peachSoft"><span class="chip-ico">✨</span><span class="chip-label">AI по фото</span></button>
+        <button class="chip tone-peachSoft"><span class="chip-ico">🎙</span><span class="chip-label">Голосом</span></button>
+        <button class="chip tone-surfaceMuted"><span class="chip-ico">⭐</span><span class="chip-label">Избранное</span></button>
+      </div>
+      <p class="small text-muted" style="text-align: center;">Недавние: каша овсяная · суп куриный · творог 5%</p>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-pregnancy-week">
+
+  <div class="phone-frame">
+    <div class="screen-container">
+      <div class="gap-xs">
+        <p class="small" style="color: var(--stage-expecting-strong); font-weight: 600;">Жду</p>
+        <h1 class="title">24-я неделя</h1>
+      </div>
+
+      <!-- Hero недели (PinkyBloom / Clatch / Baby+) -->
+      <div class="hero" style="background: var(--color-lavenderSoft); flex-direction: column; align-items: stretch; gap: var(--space-sm);">
+        <div style="display: flex; align-items: center; gap: var(--space-md);">
+          <span class="number" style="color: var(--color-lavender);">24</span>
+          <div class="hero-text">
+            <span class="hero-title">До ПДР 112 дней</span>
+            <span class="hero-sub">2-й триместр · 24-я неделя из 40</span>
+          </div>
+        </div>
+        <div class="segmented">
+          <button>1-й триместр</button>
+          <button class="active">2-й триместр</button>
+          <button>3-й триместр</button>
+        </div>
+        <!-- шкала 40 недель -->
+        <div class="progress-track" style="height: 8px;">
+          <div class="progress-fill" style="width: 60%; background: var(--color-lavender);"></div>
+        </div>
+        <p class="small text-muted">Неделя 24 из 40</p>
+      </div>
+
+      <!-- Что формируется -->
+      <div class="card pressable">
+        <p class="card-title">На этой неделе</p>
+        <p class="body-strong">Что формируется сейчас</p>
+        <p class="small text-muted">Кожа малыша уплотняется, формируются вкусовые рецепторы. Подробнее — в статье недели ›</p>
+      </div>
+
+      <!-- Размер плода: сравнение -->
+      <div class="card tone-lavenderSoft pressable">
+        <p class="card-title">Размер малыша</p>
+        <div class="kv" style="min-height: 0;">
+          <span class="hero-title">≈ 30 см · ≈ 600 г</span>
+          <span class="badge" style="background: var(--color-surface); color: var(--color-lavender);">как кукуруза</span>
+        </div>
+      </div>
+
+      <!-- Визиты и чек-листы -->
+      <div class="card" style="gap: 0; padding: var(--space-sm) var(--space-lg);">
+        <div class="track-row">
+          <span class="icon-pill tone-lavenderSoft">🩺</span>
+          <span class="track-text"><span class="track-title">Следующий визит</span><span class="track-sub">28 ноября · УЗИ, 2-й скрининг</span></span>
+          <span class="chev">›</span>
+        </div>
+        <div class="divider"></div>
+        <div class="track-row">
+          <span class="icon-pill tone-lavenderSoft">🎒</span>
+          <span class="track-text"><span class="track-title">Сумка в роддом</span><span class="track-sub">Чек-лист · готово 4 из 12</span></span>
+          <span class="chev">›</span>
+        </div>
+      </div>
+
+      <!-- Быстрые трекеры недели -->
+      <div class="chip-grid">
+        <button class="chip tone-lavenderSoft"><span class="chip-ico">👣</span><span class="chip-label">Шевеления</span></button>
+        <button class="chip tone-lavenderSoft"><span class="chip-ico">⏱</span><span class="chip-label">Схватки</span></button>
+        <button class="chip tone-lavenderSoft"><span class="chip-ico">⚖</span><span class="chip-label">Вес</span></button>
+      </div>
+    </div>
+
+    <div class="tabbar">
+      <button class="tab"><span class="tab-ico">☀</span><span class="tab-label">Сегодня</span></button>
+      <button class="tab active"><span class="tab-ico">▦</span><span class="tab-label">Трекеры</span></button>
+      <div class="tab-add"><button class="add-btn">+</button></div>
+      <button class="tab"><span class="tab-ico">📖</span><span class="tab-label">Знания</span></button>
+      <button class="tab"><span class="tab-ico">👤</span><span class="tab-label">Профиль</span></button>
+    </div>
+  </div>
+  <div class="text-center mt-lg mb-lg"><a href="#/index.html" class="btn btn-soft">Назад к списку экранов</a></div>
+
+</section><section class="page" id="p-themes">
+
+  <div class="index-page" style="padding-bottom: 0;">
+    <h1>Темы оформления Kelaya</h1>
+    <p class="description">Четыре варианта одной темы. На остальных страницах макетов тема переключается кнопкой сверху справа. Токены — в <code>redesign.css</code>, в приложении будут в <code>src/ui/theme.ts</code>.</p>
+    <p class="small text-muted" style="margin-bottom: var(--space-lg);"><a href="#/index.html">← К списку экранов</a></p>
+  </div>
+
+  <div class="themes-grid">
+    <div class="demo">
+      <h2>Обычная Нежность</h2>
+      <p>Текущая тема приложения: тёплый молочный фон, пыльная роза.</p>
+      <div class="phone-frame"><div class="screen-container">
+        <div class="gap-xs"><p class="small" style="color: var(--stage-mother-strong); font-weight: 600;">Мама</p><h1 class="title">Сегодня</h1></div>
+        <div class="hero" style="background: var(--color-mintSoft);"><div class="hero-text"><p class="card-title">Последнее кормление</p><span class="hero-title">Грудь, левая · 12 мин</span><span class="hero-sub">2 ч 15 мин назад</span></div></div>
+        <div class="chip-grid">
+          <button class="chip tone-mintSoft"><span class="chip-ico">🍼</span><span class="chip-label">Кормление</span></button>
+          <button class="chip tone-mintSoft"><span class="chip-ico">😴</span><span class="chip-label">Сон</span></button>
+          <button class="chip tone-skySoft"><span class="chip-ico">💧</span><span class="chip-label">Вода +250</span></button>
+        </div>
+        <div class="card tone-skySoft"><div style="display:flex; align-items:center; gap: var(--space-md);"><div class="ring ring-sm" style="--p:60; --c: var(--color-sky);"><div class="ring-inner"><span class="ring-value">60%</span></div></div><div style="flex:1;"><p class="card-title">Вода</p><p class="body-strong">1,2 л из 2 л</p></div></div></div>
+      </div></div>
+    </div>
+
+    <div class="demo" data-theme="zakat">
+      <h2>Закатные Облака</h2>
+      <p>Ночная «Обычной Нежности»: тёплый тёмный фон, акценты светлее.</p>
+      <div class="phone-frame"><div class="screen-container">
+        <div class="gap-xs"><p class="small" style="color: var(--stage-mother-strong); font-weight: 600;">Мама</p><h1 class="title">Сегодня</h1></div>
+        <div class="hero" style="background: var(--color-mintSoft);"><div class="hero-text"><p class="card-title">Последнее кормление</p><span class="hero-title">Грудь, левая · 12 мин</span><span class="hero-sub">2 ч 15 мин назад</span></div></div>
+        <div class="chip-grid">
+          <button class="chip tone-mintSoft"><span class="chip-ico">🍼</span><span class="chip-label">Кормление</span></button>
+          <button class="chip tone-mintSoft"><span class="chip-ico">😴</span><span class="chip-label">Сон</span></button>
+          <button class="chip tone-skySoft"><span class="chip-ico">💧</span><span class="chip-label">Вода +250</span></button>
+        </div>
+        <div class="card tone-skySoft"><div style="display:flex; align-items:center; gap: var(--space-md);"><div class="ring ring-sm" style="--p:60; --c: var(--color-sky);"><div class="ring-inner"><span class="ring-value">60%</span></div></div><div style="flex:1;"><p class="card-title">Вода</p><p class="body-strong">1,2 л из 2 л</p></div></div></div>
+      </div></div>
+    </div>
+
+    <div class="demo" data-theme="day">
+      <h2>Строгость Дня</h2>
+      <p>Строгий белый: белый фон, чёткие границы, холодный синий акцент, меньше скругления.</p>
+      <div class="phone-frame"><div class="screen-container">
+        <div class="gap-xs"><p class="small" style="color: var(--stage-mother-strong); font-weight: 600;">Мама</p><h1 class="title">Сегодня</h1></div>
+        <div class="hero" style="background: var(--color-mintSoft);"><div class="hero-text"><p class="card-title">Последнее кормление</p><span class="hero-title">Грудь, левая · 12 мин</span><span class="hero-sub">2 ч 15 мин назад</span></div></div>
+        <div class="chip-grid">
+          <button class="chip tone-mintSoft"><span class="chip-ico">🍼</span><span class="chip-label">Кормление</span></button>
+          <button class="chip tone-mintSoft"><span class="chip-ico">😴</span><span class="chip-label">Сон</span></button>
+          <button class="chip tone-skySoft"><span class="chip-ico">💧</span><span class="chip-label">Вода +250</span></button>
+        </div>
+        <div class="card tone-skySoft"><div style="display:flex; align-items:center; gap: var(--space-md);"><div class="ring ring-sm" style="--p:60; --c: var(--color-sky);"><div class="ring-inner"><span class="ring-value">60%</span></div></div><div style="flex:1;"><p class="card-title">Вода</p><p class="body-strong">1,2 л из 2 л</p></div></div></div>
+      </div></div>
+    </div>
+
+    <div class="demo" data-theme="vecher">
+      <h2>Строгость Вечер</h2>
+      <p>Строгий тёмный: графитовый фон, белый текст, холодный синий акцент.</p>
+      <div class="phone-frame"><div class="screen-container">
+        <div class="gap-xs"><p class="small" style="color: var(--stage-mother-strong); font-weight: 600;">Мама</p><h1 class="title">Сегодня</h1></div>
+        <div class="hero" style="background: var(--color-mintSoft);"><div class="hero-text"><p class="card-title">Последнее кормление</p><span class="hero-title">Грудь, левая · 12 мин</span><span class="hero-sub">2 ч 15 мин назад</span></div></div>
+        <div class="chip-grid">
+          <button class="chip tone-mintSoft"><span class="chip-ico">🍼</span><span class="chip-label">Кормление</span></button>
+          <button class="chip tone-mintSoft"><span class="chip-ico">😴</span><span class="chip-label">Сон</span></button>
+          <button class="chip tone-skySoft"><span class="chip-ico">💧</span><span class="chip-label">Вода +250</span></button>
+        </div>
+        <div class="card tone-skySoft"><div style="display:flex; align-items:center; gap: var(--space-md);"><div class="ring ring-sm" style="--p:60; --c: var(--color-sky);"><div class="ring-inner"><span class="ring-value">60%</span></div></div><div style="flex:1;"><p class="card-title">Вода</p><p class="body-strong">1,2 л из 2 л</p></div></div></div>
+      </div></div>
+    </div>
+  </div>
+
+</section>
+<script>
+/* Kelaya redesign — прототипная навигация для шаринга тестерам.
+   Проставляет переходы между статическими макетами по смыслу элемента. */
+(function () {
+  var here = (location.hash.replace(/^#\/?/, '') || 'index.html');
+
+  var TAB_PAGE = {
+    'Сегодня': 'today-mother.html',
+    'Трекеры': 'trackers.html',
+    'Знания': 'knowledge.html',
+    'Профиль': 'profile.html'
+  };
+
+  // Куда ведёт карточка/строка по её заголовку
+  var RULES = [
+    [/лента дня/i, 'day-feed.html'],
+    [/календар|цикл/i, 'cycle-calendar.html'],
+    [/питание|ккал/i, 'nutrition-diary.html'],
+    [/недел/i, 'pregnancy-week.html'],
+    [/вода/i, 'tracker.html'],
+    [/кормлен|сон|подгуз/i, 'tracker.html'],
+    [/рост|вес|здоров|событи|трек/i, 'tracker.html']
+  ];
+
+  function targetFor(el) {
+    if (el.classList.contains('tab')) {
+      var label = el.querySelector('.tab-label');
+      return label ? TAB_PAGE[label.textContent.trim()] : null;
+    }
+    if (el.classList.contains('add-btn')) return 'add.html';
+    if (el.classList.contains('stage-card')) return null; // только выбор
+    if (here === 'onboarding.html' && el.classList.contains('btn-primary')) return 'onboarding-data.html';
+    if (here === 'onboarding-data.html' && el.classList.contains('btn-primary')) return 'today-expecting.html';
+    if (here === 'today-self.html' && /отметить/i.test(el.textContent)) return 'add.html';
+    var text = (el.querySelector('.card-title, .track-title, .track-text, .chip-label, .hero-title') || el).textContent || '';
+    for (var i = 0; i < RULES.length; i++) {
+      if (RULES[i][0].test(text)) return RULES[i][1];
+    }
+    if (el.classList.contains('pressable') || el.classList.contains('track-row') || el.classList.contains('chip')) return 'tracker.html';
+    return null;
+  }
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest('.tab, .add-btn, .pressable, .track-row, .chip, .stage-card, .btn-primary, .quick-btn, .meal-add, .hero .btn');
+    if (!el) return;
+    if (el.tagName === 'A') return; // обычные ссылки работают сами
+    if (el.classList.contains('stage-card')) {
+      document.querySelectorAll('.stage-card').forEach(function (c) { c.classList.remove('selected'); });
+      el.classList.add('selected');
+      return;
+    }
+    var t = targetFor(el);
+    if (t && t !== here) location.hash = '#/' + t;
+  });
+
+  /* Переключатель тем оформления (FAB сверху справа) */
+  var THEMES = [
+    { id: '', name: 'Обычная Нежность' },
+    { id: 'zakat', name: 'Закатные Облака' },
+    { id: 'day', name: 'Строгость Дня' },
+    { id: 'vecher', name: 'Строгость Вечер' }
+  ];
+  var saved = '';
+  try { saved = localStorage.getItem('kelaya-theme') || ''; } catch (e) { /* приватный режим */ }
+  var idx = 0;
+  for (var i = 0; i < THEMES.length; i++) if (THEMES[i].id === saved) idx = i;
+  var fab = document.createElement('button');
+  fab.type = 'button';
+  fab.textContent = 'Тема: ' + THEMES[idx].name;
+  fab.style.cssText = 'position: fixed; top: 12px; right: 12px; z-index: 9999; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--color-border); background: var(--color-surface); color: var(--color-text); font: 600 13px var(--font-family); cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,.15);';
+  document.body.appendChild(fab);
+  function applyTheme(n) {
+    idx = (n + THEMES.length) % THEMES.length;
+    var id = THEMES[idx].id;
+    if (id) document.documentElement.setAttribute('data-theme', id);
+    else document.documentElement.removeAttribute('data-theme');
+    try { localStorage.setItem('kelaya-theme', id); } catch (e) { /* ignore */ }
+    fab.textContent = 'Тема: ' + THEMES[idx].name;
+  }
+  fab.addEventListener('click', function () { applyTheme(idx + 1); });
+  applyTheme(idx);
+})();
+
+</script>
+<script>
+(function () {
+  function route() {
+    var id = (location.hash.replace(/^#\/?/, '') || 'index').replace(/\.html$/, '');
+    var el = document.getElementById('p-' + id);
+    if (!el) id = 'index';
+    document.querySelectorAll('section.page').forEach(function (s) {
+      s.classList.toggle('active', s.id === 'p-' + id);
+    });
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
+</body>
+</html>
